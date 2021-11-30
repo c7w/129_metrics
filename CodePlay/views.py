@@ -5,7 +5,7 @@ import django.contrib.auth.models as AuthModels
 from django.db.models import Q
 from django.utils import timezone
 
-from models.Game import Start, Result
+from CodePlay.models.Game import Start, Result
 
 # Create your views here.
 
