@@ -15,11 +15,188 @@
       href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css"
     />
     <link href="{% static 'css/global.css' %}" rel="stylesheet" />
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="http://cdn.highcharts.com.cn/highcharts/9.3.1/themes/grid.js"></script><!--主题   网格 -->
+
+
+<script>
+$(function () { 
+    $('#container').highcharts({ 
+        chart:{
+            type:'line',
+            //zoomType 取值为 x、y、xy 中的一个，分别表示图表可以沿 x 轴，y轴，xy轴放大，也就是水平、竖直、平面放大。zoomType 默认值是 None，即无方法功能
+            zoomType:'x',
+            
+            spacingRight: 20//图的右边框和绘图区之间的距离 默认是10
+        },
+        /************标题***************/
+        //标题默认显示在图表的顶部，包括标题和副标题（subTitle），其中副标题是非必须的。
+        //主标图
+        title: { 
+            //标题文字水平对齐方式有，center,left,right,默认为center
+            //标题文字垂直对齐方式，有top、middle、bottom可选 默认为空【""】
+            text: '累计访问量', //标题文字用text表示
+            x:-20
+            //隐藏标题    设置标题为null即可
+            //text:null
+            
+            //text:'<h1>Monthly Average Temperature</h1>',
+            
+            //useHTML:true,//是否解析html标签，设置解析后，可以使用例如a等html标签 默认是false
+            
+            //floating:true,//是否浮动，设置浮动后，标题将不占用图表区位置 默认是false
+            
+            //style:{},//文字样式，可以设置文字颜色、字体、字号，注意和css有略微的不同，例如font-size用fontSize、font-family用fontFamily表示
+            
+            //margin:80,//标题和图表区的间隔，当有副标题时，表示标题和副标题之间的间隔 默认是15
+            
+            //x: -200, //相对于水平对齐的偏移量，可以是负数，单位是px 默认是0
+            
+            //y: 20 //相对于垂直对齐的偏移量，可以使负数，单位是px 默认是0
+            
+        }, 
+        //副标题
+        subtitle: { 
+            text: null,
+            x: -20 
+        },
+        
+        /************坐标轴***************/
+        //所有的图表除了饼图都有X轴和Y轴，默认情况下，x轴显示在图表的底部，y轴显示在左侧
+        //（多个y轴时可以是显示在左右两侧），通过设置chart.inverted = true 可以让x，y轴显示位置对调
+        xAxis: { 
+            //categories: ['2011年', '2012年', '2013年', '2014年', '2015年', '2016年'] //categories
+            //坐标轴的类型。可以是"linear", "logarithmic", "datetime" 或者 "category"之一。
+            //在时间轴中，坐标轴的值是以毫秒为单位的，刻度线上显示像整数的小时或天的适当值。
+            //在类别轴中，默认采用图表数据点的名称做分类名称，如果定义类别名称数组可覆盖默认名称。默认是： linear.
+            type: 'datetime', 
+            maxZoom: 14 * 24 * 3600000, // fourteen days已经废弃使用 
+            title: { text: null }//去除x轴标题
+        }, 
+        yAxis: { 
+            title: { text: '累计访问量' },//y轴标题
+            //plotLines: [{ value: 0, width: 1, color: '#808080' }] ,
+            //标示线
+             plotLines:[{
+                color:'red',           //线的颜色，定义为红色
+                dashStyle:'solid',     //默认值，这里定义为实线
+                value:600,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                width:2                //标示线的宽度，2px
+            }]
+        },
+        
+        
+        /*************版权信息**********************/
+        credits:{
+             enabled:false // 禁用版权信息
+        },
+        
+        /*************数据提示框**********************/
+        //tooltip: { valueSuffix: '°C' }, 
+        tooltip: {
+            //backgroundColor: '#FCFFC5',   // 背景颜色
+            //borderColor: 'black',         // 边框颜色
+            //borderRadius: 10,             // 边框圆角
+            //borderWidth: 3,               // 边框宽度
+            //shadow: true,                 // 是否显示阴影
+            //animation: true ,              // 是否启用动画效果
+            
+            //style: {                      // 文字内容相关样式
+            //    color: "#ff0000",
+            //    fontSize: "12px",
+            //    fontWeight: "blod",
+            //    fontFamily: "Courir new"
+            //}
+            
+            //enabled:false,    //禁用提示框
+            
+            //格式化函数 this.x表示当前点X值，this.series表示当前数据列，this.y表示当前y值
+            //formatter:function(){
+            //    return this.series.name + " " + this.x + " " + this.y;
+            //}//自定义提示
+            
+            //当提示框被共享时，整个绘图区都将捕捉鼠标指针的移动。
+            //提示框文本显示有序数据(不包括饼图，散点图和标志图(flag)等)的系列类型将被显示在单一的气泡中。推荐在单一系列的图表和平板/手机优化的图表中使用。
+            shared: true
+        },
+        
+        
+        
+        /************图例***************/
+        //省略图例会在下面显示
+        //也可以设置 设置在下方
+        legend: { 
+            //layout: 'horizontal',//horizontal,vertical
+            //align: 'center', 
+            //verticalAlign: 'bottom', 
+            //borderWidth: 0 
+            enabled:false//关闭图例
+        }, 
+        /*
+        //显示在靠右居中
+        legend: { 
+            layout: 'vertical',//horizontal,vertical
+            align: 'right', 
+            verticalAlign: 'middle', 
+            borderWidth: 0 
+        },
+        */
+        
+        //plotOptions用于设置图表中的数据点相关属性。
+        plotOptions: { 
+            /*
+            line: { 
+                //animation:true,//是否在显示图表的时候使用动画  
+                cursor:'pointer',//鼠标移到图表上时手势的样式  
+                dataLabels: { 
+                    enabled: true//是否在数据点上直接显示数据 设为true表示是
+                }, 
+                enableMouseTracking: false //鼠标移到图表上时是否显示提示框  
+            } 
+            */
+            area: { 
+                //Fill color or gradient for the area. When null, the series' color is used with the series' fillOpacity
+                //为区域填充颜色或者梯度，如果没有区域的话，数据列的颜色将会使用fillOpacity填充透明
+                fillColor: { 
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1}, //设置颜色渐变
+                    stops: [ 
+                        [0, Highcharts.getOptions().colors[0]], 
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')] ] 
+                }, 
+                lineWidth: 1,//设置线宽度 默认是： 2.
+                //标记
+                marker: { 
+                    enabled: false //启用或禁用点标记 
+                }, 
+                shadow: false,//设置禁用图形线的下拉阴影
+                
+                //设置鼠标放上去的状态
+                states: {
+                    hover: { 
+                        lineWidth: 1 
+                    } 
+                },
+                
+                //在Y轴的值作为该区域的基础上，用于区分上述和低于阈值的值。如果为空，该区域的行为像一个线系列与填充之间的图形和Y轴最小。
+                threshold: null
+            }
+        },
+        series: [{ 
+            type: 'area', 
+            name: '累计访问量', 
+            pointInterval: 24 * 3600 * 1000,
+            pointStart: Date.UTC({{year}}, {{month}}, {{day}}),
+            data: [ {{data}} ] 
+            }]
+    });
+});
+</script>
   </head>
 
   <body>
     <main>
-      123
+      <div id="container" style="min-width:700px;height:400px"></div>
     </main>
   </body>
 </html>

@@ -17,5 +17,15 @@ from django.utils import timezone
 
 
 def index(req):
-    props = {}
+    
+    now = datetime.date.today() + datetime.timedelta(days=1)
+    
+    
+    countList = [1,2,3,4,50,6,7,8,9,10,11,12,13,155]
+    props = {
+        'year': 2021,
+        'month': 10,
+        'day': 30,
+        'data': ','.join([str(d) for d in countList])
+    }
     return render(req, 'index.html', props)

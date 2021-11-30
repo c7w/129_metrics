@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 import Backend.settings as settings
 from django.http.response import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, JsonResponse
@@ -16,7 +17,12 @@ def start(req):
 
 def result(req):
     try:
-        newStart = Result(result=req.POST.get('result'))
+        POST = json.loads(req.body)
+        r = POST.get('result')
+        li = [101,102,103,104,105]
+        if r not in li:
+            raise NotImplementedError
+        newStart = Result(result=r)
         newStart.save()
         return JsonResponse({'status': 'Accepted'})
     except:
