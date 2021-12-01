@@ -12,6 +12,8 @@ from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.db.models import Q
 from django.utils import timezone
 
+from CodePlay.models.Game import Start, Result
+
 
 # Create your views here.
 
@@ -19,13 +21,22 @@ from django.utils import timezone
 def index(req):
     
     now = datetime.date.today() + datetime.timedelta(days=1)
+    countList = []
     
+    for i in range(0, 21):
+        countList.append(Start.objects.filter(time__lte = now-datetime.timedelta(days=i)).count())
+    countList = list(reversed(countList))
     
-    countList = [1,2,3,4,50,6,7,8,9,10,11,12,13,155]
+    three_week_ago = datetime.date.today() - datetime.timedelta(days=20)
+    
+    data2 = []
+    for i in range(101, 106):
+        data2.append(Result.objects.filter(result=i).count())
     props = {
-        'year': 2021,
-        'month': 10,
-        'day': 30,
-        'data': ','.join([str(d) for d in countList])
+        'year': three_week_ago.year,
+        'month': three_week_ago.month-1,
+        'day': three_week_ago.day,
+        'data': ','.join([str(d) for d in countList]),
+        'data2': data2
     }
     return render(req, 'index.html', props)

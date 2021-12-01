@@ -26,7 +26,6 @@ $(function () {
         chart:{
             type:'line',
             //zoomType 取值为 x、y、xy 中的一个，分别表示图表可以沿 x 轴，y轴，xy轴放大，也就是水平、竖直、平面放大。zoomType 默认值是 None，即无方法功能
-            zoomType:'x',
             
             spacingRight: 20//图的右边框和绘图区之间的距离 默认是10
         },
@@ -191,12 +190,82 @@ $(function () {
             }]
     });
 });
+
+var chart2 = null;
+$(function () {
+    $('#container2').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            spacing : [100, 0 , 40, 0]
+        },
+        title: {
+            floating:true,
+            text: '圆心显示的标题'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f}% ({point.y})',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                },
+                point: {
+                    events: {
+                        mouseOver: function(e) {  // 鼠标滑过时动态更新标题
+                            // 标题更新函数，API 地址：https://api.hcharts.cn/highcharts#Chart.setTitle
+                            chart.setTitle({
+                                text: e.target.name+ '\t'+ e.target.y + ' %'
+                            });
+                        }
+                        //, 
+                        // click: function(e) { // 同样的可以在点击事件里处理
+                        //     chart.setTitle({
+                        //         text: e.point.name+ '\t'+ e.point.y + ' %'
+                        //     });
+                        // }
+                    }
+                },
+            }
+        },
+        series: [{
+            type: 'pie',
+            innerSize: '80%',
+            name: '角色比',
+            data: [
+                ['宣传工作者', {{data2.0}}],
+                ['学生领袖', {{data2.1}}],
+                ['军官', {{data2.2}}],
+                ['学者', {{data2.3}}],
+                ['直接见证者', {{data2.4}}],
+            ]
+        }]
+    }, function(c) {
+        // 环形图圆心
+        var centerY = c.series[0].center[1],
+            titleHeight = parseInt(c.title.styles.fontSize);
+        c.setTitle({
+            y:centerY + titleHeight/2
+        });
+        chart2 = c;
+    });
+});
+
 </script>
   </head>
 
   <body>
     <main>
-      <div id="container" style="min-width:700px;height:400px"></div>
+      <div id="container" ></div>
+      <div id="container2"></div>
     </main>
   </body>
 </html>
